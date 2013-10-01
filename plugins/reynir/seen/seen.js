@@ -3,7 +3,7 @@ var Plugin = (function() {
 		this.name = 'seen';
 		this.tite = 'Seen';
 		this.description = "Prints last time a user was seen. Expects axxim/logger";
-		this.version = '0.0.0';
+		this.version = '0.0.1';
 		this.author = 'Reynir';
 
 		this.bot = bot;
@@ -15,14 +15,17 @@ var Plugin = (function() {
 		}.bind(this);
 		this.moment = require('moment');
 	}
+	
 	Plugin.prototype.onCommandSeen = function (from, to, message, args) {
 		if (args.length < 2) {
 			this.bot.client.say(this.bot.getReplyTo(from, to),
-					    '.seen <nick>', 'notice');
+								'Usage: ' +
+								this.bot.config.command + 'seen <nick>',
+								'notice');
 			return;
 		}
 		var nick = args[1];
-		var Log = getLog();
+		var Log = this.getLog();
 		if (!Log) {
 			this.bot.config.bot.debug &&
 				console.log('reynir/seen requires axxim/logger!');
@@ -36,13 +39,14 @@ var Plugin = (function() {
 			}
 			if (!log)
 				return;
-			var msg = from + ': '+
-				log.from+' was last seen '+
-				this.moment(log.createdAt).fromNow()+' saying: '+
+			var msg = from + ': ' +
+				log.from + ' was last seen ' +
+				this.moment(log.createdAt).fromNow() + ' saying: ' +
 				log.message;
 			this.bot.client.say(this.bot.getReplyTo(from, to), msg);
 		}).bind(this));
 	};
+
 	return Plugin;
 })();
 exports.Plugin = Plugin;

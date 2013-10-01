@@ -37,8 +37,12 @@ var Plugin = (function() {
 				this.bot.config.bot.debug && console.log('seen.js: '+err);
 				return;
 			}
-			if (!log)
+			if (!log) {
+				this.bot.client.say(this.bot.getReplyTo(from, to),
+									"I haven't seen "+nick+" yet.",
+									'notice');
 				return;
+			}
 			var msg = from + ': ' +
 				log.from + ' was last seen ' +
 				this.moment(log.createdAt).fromNow() + ' saying: ' +

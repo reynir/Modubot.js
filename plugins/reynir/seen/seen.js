@@ -18,8 +18,9 @@ var Plugin = (function() {
 		this.Log = this.database.model('Log');
 	}
 	Plugin.prototype.onCommandSeen = function (from, to, message, args) {
-		if (args.length != 2) {
-			this.client.reply(from, to, '.seen <nick>', 'notice');
+		if (args.length < 2) {
+			this.bot.client.say(this.bot.getReplyTo(from, to),
+					    '.seen <nick>', 'notice');
 			return;
 		}
 		var nick = args[1];

@@ -47,7 +47,7 @@ var Plugin = (function() {
 				log.from + ' was last seen ' +
 				this.moment(log.createdAt).fromNow() + ' saying: ' +
 				log.message;
-			this.bot.reply(from, to, msg, 'notice');
+			this.bot.reply(from, to, msg);
 		}).bind(this));
 	};
 

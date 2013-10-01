@@ -38,16 +38,16 @@ var Plugin = (function() {
 				return;
 			}
 			if (!log) {
-				this.bot.client.say(this.bot.getReplyTo(from, to),
-									"I haven't seen "+nick+" yet.",
-									'notice');
+				this.bot.reply(from, to,
+							   "I haven't seen "+nick+" yet.",
+							   'notice');
 				return;
 			}
 			var msg = from + ': ' +
 				log.from + ' was last seen ' +
 				this.moment(log.createdAt).fromNow() + ' saying: ' +
 				log.message;
-			this.bot.client.say(this.bot.getReplyTo(from, to), msg);
+			this.bot.reply(from, to, msg);
 		}).bind(this));
 	};
 

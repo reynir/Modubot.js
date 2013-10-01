@@ -9,13 +9,9 @@ var Plugin = (function() {
 		this.bot = bot;
 		this.database = bot.database;
 		this.commands = { 'seen' : 'onCommandSeen' };
-		this.logSchema = bot.database.Schema({
-			channel: String,
-			from: String,
-			message: String,
-			createdAt: {type: Date, default: Date.now}
-		});
-		this.Log = this.database.model('Log');
+	    this.getLog = function() {
+			return this.bot.plugins['axxim/logger'].Log;
+		}.bind(this);
 	}
 	Plugin.prototype.onCommandSeen = function (from, to, message, args) {
 		if (args.length < 2) {
@@ -24,7 +20,7 @@ var Plugin = (function() {
 			return;
 		}
 		var nick = args[1];
-		var query = this.Log.findOne({from: nick}).sort('-createdAt');
+		var query = this.getLog().findOne({from: nick}).sort('-createdAt');
 		query.exec((function (err, log) {
 			if (err) {
 				this.bot.config.bot.debug && console.log('seen.js: '+err);

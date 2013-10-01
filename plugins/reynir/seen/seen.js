@@ -22,7 +22,13 @@ var Plugin = (function() {
 			return;
 		}
 		var nick = args[1];
-		var query = this.getLog().findOne({from: nick}).sort('-createdAt');
+		var Log = getLog();
+		if (!Log) {
+			this.bot.config.bot.debug &&
+				console.log('reynir/seen requires axxim/logger!');
+			return;
+		}
+		var query = Log.findOne({from: nick}).sort('-createdAt');
 		query.exec((function (err, log) {
 			if (err) {
 				this.bot.config.bot.debug && console.log('seen.js: '+err);

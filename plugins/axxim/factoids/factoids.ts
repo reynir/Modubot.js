@@ -46,7 +46,22 @@ export class Plugin {
 	}
 
 	onCommandForget(from:string, to:string, message:string, args:any) {
+		if (args.length < 2) {
+			this.bot.reply(from, to, "Usage: " +
+						   this.bot.config.bot.command + "f <factoid>",
+						   'notice');
+			return;
+		}
+		var factoidName = args[1].toLowerCase();
 
+		this.Factoid.findOne({ factoid: factoidName, locked: false })
+		.sort('-createdAt')
+		.remove(function(err) {
+			if (err) {
+				this.bot.config.bot.debug && console.log(err);
+				return;
+			}
+		});
 	}
 
 	onCommandRemember(from:string, to:string, message:string, args:any) {

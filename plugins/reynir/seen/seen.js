@@ -10,8 +10,10 @@ var Plugin = (function() {
 		this.database = bot.database;
 		this.commands = { 'seen' : 'onCommandSeen' };
 	    this.getLog = function() {
-			return this.bot.plugins['axxim/logger'].Log;
+			var logger = this.bot.plugins['axxim/logger'];
+			return logger && logger.Log;
 		}.bind(this);
+		this.moment = require('moment');
 	}
 	Plugin.prototype.onCommandSeen = function (from, to, message, args) {
 		if (args.length < 2) {
@@ -30,7 +32,7 @@ var Plugin = (function() {
 				return;
 			var msg = from + ': '+
 				log.from+' was last seen '+
-				log.createdAt+' saying:'+
+				this.moment(log.createdAt).fromNow()+' saying: '+
 				log.message;
 			this.bot.client.say(this.bot.getReplyTo(from, to), msg);
 		}).bind(this));
